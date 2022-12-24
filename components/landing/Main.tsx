@@ -23,35 +23,35 @@ export default function MainLandingComponent() {
                 </Grid>
                 <Grid container justifyContent="center">
                     <ImageComponent
-                        sx={{py: 2, height: [300, 300, 400, 400], width: [100, 100, 700, 700]}}
+                        sx={{py: 2, height: [300, 300, 400, 400], width: [400, 400, 700, 700]}}
                         src={HeroImage}
                         alt="Picture of the author"
                         borderRadius="md"
                     />
                 </Grid>
                 <Grid container rowSpacing={6} sx={{my: 4}}>
-                    <Grid item xs={6} sx={{pr: 8}}>
+                    <Grid item xs={12} md={6} sx={{pr: 8}}>
                         <Typography variant="h4" textAlign="start">Let your fans & followers ride along your journey as
                             an
                             artist</Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                         <ImageComponent
-                            sx={{py: 2, height: [140, 140, 300, 300], width: [140, 140, 400, 400]}}
+                            sx={{py: 2, height: [200, 200, 300, 300], width: ['100%', '100%', 400, 400]}}
                             src={DjImage}
                             alt="Picture of the author"
                             borderRadius="md"
                         />
                     </Grid>
-                    <Grid item xs={6} sx={{pr: 8}}>
+                    <Grid item xs={12} md={6} sx={{pr: 8}}>
                         <Typography variant="h4" textAlign="start">Create your own NFTs to incentivize people who
                             support
                             you the
                             most</Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                         <ImageComponent
-                            sx={{py: 2, height: [140, 140, 300, 300], width: [140, 140, 400, 400]}}
+                            sx={{py: 2, height: [200, 200, 300, 300], width: ['100%', '100%', 400, 400]}}
                             src={RecordImage}
                             alt="Picture of the author"
                             borderRadius="md"
