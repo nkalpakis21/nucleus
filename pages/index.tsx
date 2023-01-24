@@ -1,4 +1,5 @@
 import {Inter} from '@next/font/google'
+import { id } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import MainAppBar from "../components/app-bar/Main";
 import MainLandingComponent from "../components/landing/Main";
@@ -37,7 +38,7 @@ export default function Home({posts} : any) {
 
     }, [])
 
-    console.log(ids);
+    
     return (
         <>
             <MainAppBar/>

@@ -1,8 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import supabase from '../../utils/supabase';
+import twitterClient from '../../utils/twitter'
 
 type Data = {
-  ids: Array<string>
+  tweets: any
 }
 
 export default async function handler(
@@ -10,14 +12,17 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  const key = process.env.YOUTUBE_KEY;
-  const url = `https://www.googleapis.com/youtube/v3/search?key=${key}&part=snippet&q=gucci`;
-  const response = await fetch(url);
-  const json = await response.json();
-  const videos = json.items;
-  const ids = videos.map((video: any) => {
-    return video.id.videoId;
-  })
+  const tweets = await twitterClient.tweets.statusesMentionsTimeline();
+  const tweetToAdd = tweets?.[0]?.text;
+  if(tweetToAdd) {
+    const { data, error } = await supabase
+    .from('posts')
+    .insert([
+      { created_at: new Date(), is_published: 'true', content: tweets?.[0].text, title: 'random title', youtube_id: 'SvBEVmbEYjI', description: 'my cool description'  },
+    ])
+    console.log(data);
+  }
 
-  res.status(200).json({ ids })
+
+  res.status(200).json({ tweets })
 }
