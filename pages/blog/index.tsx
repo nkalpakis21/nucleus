@@ -30,7 +30,7 @@ export default function BlogListPage({posts}: any) {
                     spacing={3}
                     >
                         {posts.map((post: any) => (
-                            <Grid item>
+                            <Grid item key={post.id}>
                                 <BlogCard title={post.title} description={post.description} id={post.id}/>
                             </Grid>
                         ))}

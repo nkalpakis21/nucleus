@@ -24,7 +24,6 @@ export default function BlogPostPage({post}: any) {
         // event.target.pauseVideo();
     }
 
-    console.log(post.youtube_id);
     return (
         <>
             <MainAppBar/>
