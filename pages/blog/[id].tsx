@@ -1,7 +1,7 @@
 import supabase from "../../utils/supabase";
 import YouTube from 'react-youtube';
 import MainAppBar from "../../components/app-bar/Main";
-import { Container } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 
 export async function getServerSideProps ({params}: any) {
     const {data: post, error} = await supabase.from('posts').select('*').eq('id', params.id).single();
@@ -13,8 +13,7 @@ export async function getServerSideProps ({params}: any) {
 }
 export default function BlogPostPage({post}: any) {
     const opts = {
-        height: "390",
-        width: "640",
+        width: '50%',
         playerVars: {
           autoplay: 1,
         },
