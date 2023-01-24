@@ -1,4 +1,4 @@
-import supabase from '../utils/supabase';
+import supabase from '../../utils/supabase';
 import MainAppBar from '../../components/app-bar/Main';
 import BlogCard from '../../components/blog/blog-card';
 import { Grid, Container, Typography } from '@mui/material';

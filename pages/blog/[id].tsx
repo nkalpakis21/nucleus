@@ -1,4 +1,4 @@
-import supabase from "../utils/supabase";
+import supabase from "../../utils/supabase";
 import YouTube from 'react-youtube';
 import MainAppBar from "../../components/app-bar/Main";
 import { Container } from "@mui/material";

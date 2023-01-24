@@ -2,7 +2,7 @@ import {Inter} from '@next/font/google'
 import { useEffect, useState } from 'react';
 import MainAppBar from "../components/app-bar/Main";
 import MainLandingComponent from "../components/landing/Main";
-import supabase from './utils/supabase';
+import supabase from '../utils/supabase';
 const inter = Inter({subsets: ['latin']})
 
 interface IPlace {
