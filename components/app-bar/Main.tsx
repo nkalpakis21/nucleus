@@ -6,25 +6,24 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { color } from '@mui/system';
+import Link from 'next/link'
 
 export default function MainAppBar() {
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, mb: 10 }}>
             <AppBar elevation={0}>
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>
                         Nucleus 🧬
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Link href="/blog">
+                        <Button sx={{color: 'white'}} variant="text">Blog</Button>
+                    </Link>
+                    <Link href="/login">
+                        <Button sx={{color: 'white'}} variant="text">Sign In</Button>
+                    </Link>
                 </Toolbar>
             </AppBar>
         </Box>

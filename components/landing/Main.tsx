@@ -12,7 +12,7 @@ export default function MainLandingComponent() {
     const theme = useTheme();
     return (
         <>
-            <Container maxWidth="md" sx={{py: 10}}>
+            <Container maxWidth="md">
                 <Grid container sx={{alignItems: "baseline", justifyContent: "center", my: 2}}>
                     < Typography variant="h4" textAlign="center">Welcome to</Typography>
                     <Space/>

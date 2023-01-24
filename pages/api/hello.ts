@@ -2,12 +2,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
-  name: string
+  ids: Array<string>
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+
+  const key = process.env.YOUTUBE_KEY;
+  const url = `https://www.googleapis.com/youtube/v3/search?key=${key}&part=snippet&q=gucci`;
+  const response = await fetch(url);
+  const json = await response.json();
+  const videos = json.items;
+  const ids = videos.map((video: any) => {
+    return video.id.videoId;
+  })
+
+  res.status(200).json({ ids })
 }
