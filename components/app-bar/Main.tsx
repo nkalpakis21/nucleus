@@ -4,13 +4,21 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { color } from '@mui/system';
 import Link from 'next/link'
+import { useUser } from '@supabase/auth-helpers-react';
+import supabase from '../../utils/supabase';
+import { useRouter } from 'next/router';
 
 export default function MainAppBar() {
+    const user = useUser();
+    const router = useRouter();
 
+   
+    const handleLogout = async() => {
+        const { error } = await supabase.auth.signOut();
+        router.push('/');
+    }
+      
     return (
         <Box sx={{ flexGrow: 1, mb: 10 }}>
             <AppBar elevation={0}>
@@ -21,9 +29,13 @@ export default function MainAppBar() {
                     <Link href="/blog">
                         <Button sx={{color: 'white'}} variant="text">Blog</Button>
                     </Link>
-                    <Link href="/login">
-                        <Button sx={{color: 'white'}} variant="text">Sign In</Button>
-                    </Link>
+                    {!!user ? (
+                        <Button sx={{color: 'white'}} onClick={handleLogout} variant="text">Sign Out</Button>
+                    ) : (
+                        <Link href="/login">
+                            <Button sx={{color: 'white'}} variant="text">Sign In</Button>
+                        </Link>
+                    )}
                 </Toolbar>
             </AppBar>
         </Box>
