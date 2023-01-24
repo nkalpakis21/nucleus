@@ -1,7 +1,7 @@
 import supabase from "../../utils/supabase";
 import YouTube from 'react-youtube';
 import MainAppBar from "../../components/app-bar/Main";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export async function getServerSideProps ({params}: any) {
     const {data: post, error} = await supabase.from('posts').select('*').eq('id', params.id).single();
@@ -27,8 +27,8 @@ export default function BlogPostPage({post}: any) {
         <>
             <MainAppBar/>
             <Container maxWidth="md">
-                <h1>{post.title}</h1>
-                <p>{post.content}</p>
+                <Typography variant="h6">{post.title}</Typography>
+                <Typography variant="body1">{post.content}</Typography>
                 <YouTube videoId={post.youtube_id} opts={opts} onReady={onReady} />
             </Container>
         </>
