@@ -7,6 +7,12 @@ type Data = {
   tweets: any
 }
 
+interface IBlogCard {
+  title: string,
+  description: string,
+  date: string,
+}
+ 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -31,7 +37,6 @@ export default async function handler(
         { created_at: new Date(), is_published: 'true', content: tweetToAdd.text, title: 'random title', youtube_id: 'SvBEVmbEYjI', description: 'my cool description', tweet_id: tweetToAdd.id},
       ])
     }
-
   }
 
 

@@ -1,13 +1,26 @@
 import { Grid, Typography } from "@mui/material"
 import { grey } from "@mui/material/colors";
 import Link from 'next/link';
-export default function BlogCard({title, description, id}: {title: string, description: string, id: string}) {
+import ImageComponent from "../ui/image/Image";
+import TwitterIcon from "../../public/social/twitter.png"
+
+export default function BlogCard({title, description, id, date}: {title: string, description: string, id: string, date: string}) {
     return (
-        <Grid container sx={{p:3, backgroundColor: grey[300], width: 200, height: 200, borderRadius: 1, alignItems: 'center'}}>
-            <Link href={`/blog/${id}`} style={{ textDecoration: 'none' }}>
-                <Typography variant="h5">{title}</Typography>
-                <Typography variant="body1">{description}</Typography>        
-            </Link>
-        </Grid>
+        
+        <Link href={`/blog/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
+            <Grid container justifyContent="space-between" direction="column" sx={{p:3, backgroundColor: grey[300], width: 300, height: 200, borderRadius: 1}}>
+                <Grid container justifyContent="space-between">
+                    <Grid item>
+                        <Typography variant="h5">{title}</Typography>
+                        <Typography variant="body1">{description}</Typography>  
+                    </Grid>
+                    <Grid item>
+                        <ImageComponent src={TwitterIcon} alt={"Twitter"}
+                                sx={{height: 28, width: 28}}/>      
+                    </Grid>
+                </Grid>
+                <Typography sx={{color: grey[600]}}variant="body1">{date}</Typography>        
+            </Grid>
+        </Link>
     )
 }

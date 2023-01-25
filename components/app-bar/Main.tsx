@@ -20,7 +20,7 @@ export default function MainAppBar() {
     }
       
     return (
-        <Box sx={{ flexGrow: 1, mb: 10 }}>
+        <Box sx={{ flexGrow: 1, mb: 14 }}>
             <AppBar elevation={0}>
                 <Toolbar>
                     <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>

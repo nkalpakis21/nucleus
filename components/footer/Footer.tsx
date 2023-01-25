@@ -1,4 +1,4 @@
-import {Box, Grid} from "@mui/material";
+import {Grid} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import ImageComponent from "../ui/image/Image";
@@ -7,7 +7,7 @@ import InstagramIcon from "../../public/social/instagram.png"
 
 export default function FooterComponent() {
     return (
-        <Grid container sx={{backgroundColor: grey[300], p: 6}}>
+        <Grid container sx={{backgroundColor: grey[200], py:3, px: 4, mt: 'auto'}}>
             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                 Nucleus 🧬
             </Typography>

@@ -2,6 +2,7 @@ import supabase from '../../utils/supabase';
 import MainAppBar from '../../components/app-bar/Main';
 import BlogCard from '../../components/blog/blog-card';
 import { Grid, Container, Typography } from '@mui/material';
+import FooterComponent from '../../components/footer/Footer';
 
 export async function getStaticProps() {
 
@@ -17,26 +18,23 @@ export async function getStaticProps() {
 }
 
 export default function BlogListPage({posts}: any) {
-
-    console.log(posts);
     return (
         <>
             <MainAppBar/>
-            <Container maxWidth="md">
-                <Typography variant="h2" align='center'>Blog Posts</Typography>
+            <Container maxWidth="md" sx={{minHeight: 'calc(100vh - 200px)'}}>
+                <Typography variant="h2">Blog Posts</Typography>
                 <Grid container
-                    justifyContent="center"
                     sx={{mt:5}}
                     spacing={3}
                     >
                         {posts.map((post: any) => (
                             <Grid item key={post.id}>
-                                <BlogCard title={post.title} description={post.description} id={post.id}/>
+                                <BlogCard title={post.title} description={post.description} id={post.id} date={new Date(post.created_at).toDateString()}/>
                             </Grid>
                         ))}
                 </Grid>
             </Container>
-            
+            <FooterComponent/>
         </>
     )
 }
