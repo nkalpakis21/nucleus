@@ -4,7 +4,7 @@ import MainAppBar from "../../components/app-bar/Main";
 import { Box, Container, Grid, Typography } from "@mui/material";
 
 export async function getServerSideProps ({params}: any) {
-    const {data: post, error} = await supabase.from('posts').select('*').eq('id', params.id).single();
+    const {data: post, error} = await supabase.from('posts').select('*, comments(*)').eq('id', params.id).single();
     return {
         props: {
             post

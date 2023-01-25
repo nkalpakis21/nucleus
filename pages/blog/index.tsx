@@ -21,17 +21,17 @@ export default function BlogListPage({posts}: any) {
     return (
         <>
             <MainAppBar/>
-            <Container maxWidth="md" sx={{minHeight: 'calc(100vh - 200px)'}}>
+            <Container maxWidth="md" sx={{mb: 6, minHeight: 'calc(100vh - 200px)'}}>
                 <Typography variant="h2">Blog Posts</Typography>
                 <Grid container
                     sx={{mt:5}}
                     spacing={3}
                     >
-                        {posts.map((post: any) => (
-                            <Grid item key={post.id}>
-                                <BlogCard title={post.title} description={post.description} id={post.id} date={new Date(post.created_at).toDateString()}/>
-                            </Grid>
-                        ))}
+                            {posts.map((post: any) => (
+                                <Grid item key={post.id}>
+                                    <BlogCard title={post.title} description={post.description} id={post.id} date={new Date(post.created_at).toDateString()}/>
+                                </Grid>
+                            ))}
                 </Grid>
             </Container>
             <FooterComponent/>
