@@ -18,25 +18,61 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  const tweets = await twitterClient.tweets.statusesMentionsTimeline();
+  // const mentions = await twitterClient.tweets.statusesMentionsTimeline();
 
-  tweets.map(async (tweet) => {
-    if(tweet.id && tweet.text) {
+  // const mentionTweets: any = await Promise.all(
+  //   mentions.map(async (mention) => {
+  //     return await twitterClient.tweets.statusesLookup({id: mention.id_str});
+  //   })
+  // )
   
-      const { data: posts, error: checkError } = await supabase
-        .from('posts')
-        .select("*")
-        .eq('tweet_id', tweet.id);
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAAF4FrclyKI9Ivo3uKRlDKSaoxkAw%3D589SW9xQYVddpkxYiajIcWQDNsDHtRM9sbpndVVCUYDr5bUS2R");
+  myHeaders.append("Cookie", "guest_id=v1%3A167469864167089297");
   
-      if(posts && posts.length < 1) {
-        const { data, error } = await supabase
-        .from('posts')
-        .insert([
-          { created_at: new Date(), is_published: 'true', content: tweet.text, title: tweet.user.name, youtube_id: 'SvBEVmbEYjI', description: tweet.text, tweet_id: tweet.id},
-        ])
+  var requestOptions: any = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+  
+  const resp: any = await fetch("https://api.twitter.com/2/users/148873990/mentions?max_results=50&tweet.fields=created_at&expansions=author_id", requestOptions)
+    .then(response => response.json())
+    .then((result: any) => {
+      return result;
+    })
+    .catch(error => console.log('error', error));
+  
+    const mentions = resp.data;
+    const authors = resp.includes.users;
+
+    const tweets = mentions.map((mention: any) => {
+      const author = authors.find((author: any) => author.id === mention.author_id);
+      return {
+        tweet_id: mention.id,
+        text: mention.text,
+        username: author.username,
+        name: author.name,
+      };
+    });
+
+    tweets.map(async (tweet: any) => {
+      if(tweet.tweet_id && tweet.text) {
+    
+        const { data: posts, error: checkError } = await supabase
+          .from('posts')
+          .select("*")
+          .eq('tweet_id', tweet.tweet_id);
+    
+        if(posts && posts.length < 1) {
+          const { data, error } = await supabase
+          .from('posts')
+          .insert([
+            { created_at: new Date(), is_published: 'true', content: tweet.text, title: tweet.name, youtube_id: 'SvBEVmbEYjI', description: tweet.text, tweet_id: tweet.tweet_id},
+          ])
+        }
       }
-    }
-  })
+    })
 
 
 

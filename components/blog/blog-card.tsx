@@ -10,9 +10,9 @@ export default function BlogCard({title, description, id, date}: {title: string,
         <Link href={`/blog/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
             <Grid container justifyContent="space-between" direction="column" sx={{p:3, backgroundColor: grey[300], width: 300, height: 200, borderRadius: 1}}>
                 <Grid container justifyContent="space-between">
-                    <Grid item xs={9}>
+                    <Grid item xs={10}>
                         <Typography variant="h6">{title}</Typography>
-                        <Typography variant="body1">{description.length > 70 ? `${description.slice(0,70)}...` : description}</Typography>  
+                        <Typography variant="body2">{description.length > 70 ? `${description.slice(0,70)}...` : description}</Typography>  
                     </Grid>
                     <Grid item xs>
                         <Grid container justifyContent="end">
