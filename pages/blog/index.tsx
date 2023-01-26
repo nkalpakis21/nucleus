@@ -21,8 +21,8 @@ export default function BlogListPage({posts}: any) {
     return (
         <>
             <MainAppBar/>
-            <Container maxWidth="md" sx={{mb: 6, minHeight: 'calc(100vh - 200px)'}}>
-                <Typography variant="h2">Blog Posts</Typography>
+            <Container maxWidth="lg" sx={{mb: 6, minHeight: 'calc(100vh - 200px)'}}>
+                <Typography variant="h2">Threads 🧵</Typography>
                 <Grid container
                     sx={{mt:5}}
                     spacing={3}

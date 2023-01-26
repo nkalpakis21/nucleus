@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useUser } from '@supabase/auth-helpers-react';
 import supabase from '../../utils/supabase';
 import { useRouter } from 'next/router';
+import { Container } from '@mui/material';
 
 export default function MainAppBar() {
     const user = useUser();
@@ -22,21 +23,23 @@ export default function MainAppBar() {
     return (
         <Box sx={{ flexGrow: 1, mb: 14 }}>
             <AppBar elevation={0}>
-                <Toolbar>
-                    <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>
-                        Nucleus 🧬
-                    </Typography>
-                    <Link href="/blog" style={{textDecoration: 'none'}}>
-                        <Button sx={{color: 'white'}} variant="text">Blog</Button>
-                    </Link>
-                    {!!user ? (
-                        <Button sx={{color: 'white'}} onClick={handleLogout} variant="text">Sign Out</Button>
-                    ) : (
-                        <Link href="/login" style={{textDecoration: 'none'}}>
-                            <Button sx={{color: 'white'}} variant="text">Sign In</Button>
+                <Container maxWidth="xl">
+                    <Toolbar>
+                        <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>
+                            Nucleus 🧬
+                        </Typography>
+                        <Link href="/blog" style={{textDecoration: 'none'}}>
+                            <Button sx={{color: 'white'}} variant="text">Blog</Button>
                         </Link>
-                    )}
-                </Toolbar>
+                        {!!user ? (
+                            <Button sx={{color: 'white'}} onClick={handleLogout} variant="text">Sign Out</Button>
+                        ) : (
+                            <Link href="/login" style={{textDecoration: 'none'}}>
+                                <Button sx={{color: 'white'}} variant="text">Sign In</Button>
+                            </Link>
+                        )}
+                    </Toolbar>
+                </Container>
             </AppBar>
         </Box>
     );
