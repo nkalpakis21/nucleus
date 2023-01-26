@@ -17,14 +17,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
-  // const mentions = await twitterClient.tweets.statusesMentionsTimeline();
-
-  // const mentionTweets: any = await Promise.all(
-  //   mentions.map(async (mention) => {
-  //     return await twitterClient.tweets.statusesLookup({id: mention.id_str});
-  //   })
-  // )
   
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAAF4FrclyKI9Ivo3uKRlDKSaoxkAw%3D589SW9xQYVddpkxYiajIcWQDNsDHtRM9sbpndVVCUYDr5bUS2R");
@@ -36,7 +28,7 @@ export default async function handler(
     redirect: 'follow'
   };
   
-  const resp: any = await fetch("https://api.twitter.com/2/users/148873990/mentions?max_results=50&tweet.fields=created_at&expansions=author_id", requestOptions)
+  const resp: any = await fetch("https://api.twitter.com/2/users/148873990/mentions?max_results=50&tweet.fields=created_at,conversation_id&expansions=author_id,referenced_tweets.id", requestOptions)
     .then(response => response.json())
     .then((result: any) => {
       return result;
@@ -53,8 +45,10 @@ export default async function handler(
         text: mention.text,
         username: author.username,
         name: author.name,
+        conversation_id: mention.conversation_id,
       };
     });
+
 
     tweets.map(async (tweet: any) => {
       if(tweet.tweet_id && tweet.text) {
@@ -64,17 +58,27 @@ export default async function handler(
           .select("*")
           .eq('tweet_id', tweet.tweet_id);
     
+          console.log(tweet.tweet_id, tweet.conversation_id);
         if(posts && posts.length < 1) {
           const { data, error } = await supabase
           .from('posts')
           .insert([
-            { created_at: new Date(), is_published: 'true', content: tweet.text, title: tweet.name, youtube_id: 'SvBEVmbEYjI', description: tweet.text, tweet_id: tweet.tweet_id},
-          ])
+            { created_at: new Date(), 
+              conversation_id: tweet.conversation_id,
+              is_published: 'true', 
+              content: tweet.text, 
+              title: tweet.name, 
+              youtube_id: 'SvBEVmbEYjI', 
+              description: tweet.text, 
+              tweet_id: tweet.tweet_id, 
+            },
+          ]);
+          console.log(error);
         }
       }
     })
 
 
 
-  res.status(200).json({ tweets })
+  res.status(200).json({ tweets: mentions })
 }

@@ -5,7 +5,6 @@ import { Grid, Container, Typography } from '@mui/material';
 import FooterComponent from '../../components/footer/Footer';
 
 export async function getStaticProps() {
-
     const { data: posts, error } = await supabase
         .from('posts')
         .select('*')
