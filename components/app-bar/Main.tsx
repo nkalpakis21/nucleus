@@ -26,13 +26,13 @@ export default function MainAppBar() {
                     <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>
                         Nucleus 🧬
                     </Typography>
-                    <Link href="/blog">
+                    <Link href="/blog" style={{textDecoration: 'none'}}>
                         <Button sx={{color: 'white'}} variant="text">Blog</Button>
                     </Link>
                     {!!user ? (
                         <Button sx={{color: 'white'}} onClick={handleLogout} variant="text">Sign Out</Button>
                     ) : (
-                        <Link href="/login">
+                        <Link href="/login" style={{textDecoration: 'none'}}>
                             <Button sx={{color: 'white'}} variant="text">Sign In</Button>
                         </Link>
                     )}
