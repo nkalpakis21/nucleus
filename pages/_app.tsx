@@ -4,6 +4,8 @@ import {responsiveFontSizes} from "@mui/material";
 import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react';
 import supabase from '../utils/supabase';
 
+
+
 export default function App({Component, pageProps}: AppProps) {
     const theme = createTheme({
         typography: {
