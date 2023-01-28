@@ -4,8 +4,6 @@ import Link from 'next/link';
 import ImageComponent from "../ui/image/Image";
 import TwitterIcon from "../../public/social/twitter.png"
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import '../../public/styles/style-utils.module.css';
-
 
 export default function BlogCard({title, description, id, date}: {title: string, description: string, id: string, date: string}) {
 
