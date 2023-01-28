@@ -27,8 +27,6 @@ export async function getServerSideProps ({params}: any) {
     const comments = result.data;
     const authors = result?.includes?.users;
 
-
-    console.log(result);
     const tweets = comments?.map((mention: any) => {
         const author = authors.find((author: any) => author.id === mention.author_id);
         return {
@@ -73,7 +71,7 @@ export default function BlogPostPage({post, comments}: any) {
                 <YouTube videoId={post.youtube_id} opts={opts} onReady={onReady} />
                 <Grid container rowSpacing={3} sx={{mt: 3}}>
                     {comments && (comments?.map((comment: any) => (
-                    <Grid item>
+                    <Grid item key={comment.tweet_id}>
                         <CommentComponent text={comment.text} author={comment.username} date={new Date(comment.date).toDateString()}/>
                     </Grid>
                     )))}
