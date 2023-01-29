@@ -26,11 +26,11 @@ export default function BlogListPage({posts}: any) {
                     sx={{mt:5}}
                     spacing={3}
                     >
-                            {posts.map((post: any) => (
-                                <Grid item key={post.id}>
-                                    <BlogCard title={post.title} description={post.description} id={post.id} date={new Date(post.created_at).toDateString()}/>
-                                </Grid>
-                            ))}
+                        {posts.map((post: any) => (
+                            <Grid item key={post.id}>
+                                <BlogCard title={post.title} description={post.description} id={post.id} date={new Date(post.created_at).toDateString()}/>
+                            </Grid>
+                        ))}
                 </Grid>
             </Container>
             <FooterComponent/>

@@ -1,15 +1,15 @@
 import supabase from "../../utils/supabase";
 import YouTube from 'react-youtube';
 import MainAppBar from "../../components/app-bar/Main";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, IconButton, Input, InputLabel, TextField, Typography } from "@mui/material";
 import CommentComponent from "../../components/blog/comment";
-import { grey } from "@mui/material/colors";
+import AddIcon from '@mui/icons-material/Add';
 
 export async function getServerSideProps ({params}: any) {
     const {data: post, error} = await supabase.from('posts').select('*, comments(*)').eq('id', params.id).single();
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAAF4FrclyKI9Ivo3uKRlDKSaoxkAw%3D589SW9xQYVddpkxYiajIcWQDNsDHtRM9sbpndVVCUYDr5bUS2R");
+    myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAA5mAJ4eqvNKgzAup%2FUn5LBXj%2BI68%3Dnqsmy8XgdyHYHKDmjESLBiAdBBswL2JMsaHnUtYoHUWj2mX63F");
     myHeaders.append("Cookie", "guest_id=v1%3A167469864167089297");
 
     var requestOptions: any = {
@@ -58,6 +58,16 @@ export default function BlogPostPage({post, comments}: any) {
         // event.target.pauseVideo();
     }
 
+    const addComment = async(e: any) => {
+        e.preventDefault();
+        console.log('1618822630806802435');
+        console.log(post.tweet_id);
+
+        const response = await fetch('/api/twitter/post', {
+            method: 'POST',
+            body: JSON.stringify({"content": e.target.comment.value.toString(), "in_reply_to_status_id": post.conversation_id})
+        })
+    }
     return (
         <>
             <MainAppBar/>
@@ -69,7 +79,26 @@ export default function BlogPostPage({post, comments}: any) {
                     </Grid>
                 </Grid>
                 <YouTube videoId={post.youtube_id} opts={opts} onReady={onReady} />
-                <Grid container rowSpacing={3} sx={{mt: 3}}>
+                <Grid container sx={{mt: 4}}>
+                    <form onSubmit={addComment}>
+                        <Grid container alignItems="end">
+                            <Box sx={{mr:1.5}}>
+                                <InputLabel htmlFor="my-input">Add a comment...</InputLabel>
+                                <Input id="add-comment" name="comment" aria-describedby="add-comment" />
+                            </Box>
+                            <IconButton 
+                                type="submit"
+                                aria-lable="add-comment" 
+                                sx={{height: 20, width: 20, color: 'black', '&:hover': {
+                                    backgroundColor: 'rgba(172, 225, 246, 0.16)',
+                                    borderRadius: 1
+                                }}}>
+                                <AddIcon/>
+                            </IconButton>
+                        </Grid>
+                    </form>
+                </Grid>
+                <Grid container rowSpacing={3} mt={0.5}>
                     {comments && (comments?.map((comment: any) => (
                     <Grid item key={comment.tweet_id}>
                         <CommentComponent text={comment.text} author={comment.username} date={new Date(comment.date).toDateString()}/>
