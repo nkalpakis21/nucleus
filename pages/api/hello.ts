@@ -18,15 +18,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAA5mAJ4eqvNKgzAup%2FUn5LBXj%2BI68%3Dnqsmy8XgdyHYHKDmjESLBiAdBBswL2JMsaHnUtYoHUWj2mX63F");
-  myHeaders.append("Cookie", "guest_id=v1%3A167469864167089297");
   
-  var requestOptions: any = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-  };
   
   const resp: any = await fetch("https://api.twitter.com/2/users/148873990/mentions?max_results=50&tweet.fields=created_at,conversation_id&expansions=author_id,referenced_tweets.id", requestOptions)
     .then(response => response.json())

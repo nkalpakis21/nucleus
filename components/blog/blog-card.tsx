@@ -8,8 +8,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 export default function BlogCard({title, description, id, date}: {title: string, description: string, id: string, date: string}) {
 
     return (
-        
-        <Link href={`/blog/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
+        <Link href={`/stream/twitter/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
             <Grid container justifyContent="space-between" direction="column" sx={{p:3, backgroundColor: grey[200], width: [330,340,360,360], height: 200, borderRadius: 1}}>
                 <Grid container justifyContent="space-between">
                     <Grid item xs={10}>

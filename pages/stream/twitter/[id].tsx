@@ -1,47 +1,47 @@
-import supabase from "../../utils/supabase";
+import supabase from "../../../utils/supabase";
 import YouTube from 'react-youtube';
-import MainAppBar from "../../components/app-bar/Main";
+import MainAppBar from "../../../components/app-bar/Main";
 import { Box, Container, Grid, IconButton, Input, InputLabel, TextField, Typography } from "@mui/material";
-import CommentComponent from "../../components/blog/comment";
+import CommentComponent from "../../../components/blog/comment";
 import AddIcon from '@mui/icons-material/Add';
-
-export async function getServerSideProps ({params}: any) {
-    const {data: post, error} = await supabase.from('posts').select('*, comments(*)').eq('id', params.id).single();
-
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHCwlQEAAAAA5mAJ4eqvNKgzAup%2FUn5LBXj%2BI68%3Dnqsmy8XgdyHYHKDmjESLBiAdBBswL2JMsaHnUtYoHUWj2mX63F");
-    myHeaders.append("Cookie", "guest_id=v1%3A167469864167089297");
-
-    var requestOptions: any = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-    };
-
-    const result: any = await fetch(`https://api.twitter.com/2/tweets/search/recent?query=conversation_id:${post.conversation_id}&tweet.fields=in_reply_to_user_id,author_id,created_at&expansions=author_id`, requestOptions)
-        .then(response => response.json())
-        .then(result => result)
-        .catch(error => console.log('error', error));
+import { getCookies, setCookie} from 'cookies-next';
+import { TwitterApi } from "twitter-api-v2";
 
 
-    const comments = result.data;
-    const authors = result?.includes?.users;
-
-    const tweets = comments?.map((mention: any) => {
-        const author = authors.find((author: any) => author.id === mention.author_id);
+export async function getServerSideProps ({params, req, res}: any) {
+    const {twitterToken, twitterSecret, twitterUserId} = getCookies({ req, res });
+    
+    if(!twitterToken) {
+        const client = new TwitterApi({ appKey: '3ljRwHvLYQ86vcYadLmBjarwh', appSecret: 'HkMF1D2fHFnsHqx7kpFXi8Z9OdKmcWJf8m5Om6cRTw0ZPOq30o', accessToken: twitterToken, accessSecret: twitterSecret });
+        const authLink = await client.generateAuthLink('http://localhost:3000/api/twitter/auth/callback');    
+        setCookie('twitterToken', authLink.oauth_token, { req, res, httpOnly: true });
+        setCookie('twitterSecret', authLink.oauth_token_secret, { req, res, httpOnly: true });
         return {
-          tweet_id: mention.id,
-          text: mention.text,
-          username: `@${author.username}`,
-          name: author.name,
-          date: mention.created_at
-        };
+            props: {
+                twitterAuthLink: authLink.url,
+            }
+        }
+    }
+    
+    const twitterClient = new TwitterApi(twitterToken);
+    const tweet = await twitterClient.v2.singleTweet(params.id, {
+    expansions: [
+        'entities.mentions.username',
+        'in_reply_to_user_id',
+    ],
+    "tweet.fields": "conversation_id"
+    });
+
+
+    
+    const comments = await twitterClient.v2.search(`conversation_id: ${tweet.data.conversation_id}`, {
+        "tweet.fields" : ["created_at"]
     });
 
     return {
         props: {
-            post,
-            comments: tweets || []
+            post: tweet,
+            comments: comments.data.data || []
 
         }
     }
@@ -60,14 +60,15 @@ export default function BlogPostPage({post, comments}: any) {
 
     const addComment = async(e: any) => {
         e.preventDefault();
-        console.log('1618822630806802435');
-        console.log(post.tweet_id);
+        console.log(post.data.id);
 
         const response = await fetch('/api/twitter/post', {
             method: 'POST',
-            body: JSON.stringify({"content": e.target.comment.value.toString(), "in_reply_to_status_id": post.conversation_id})
+            body: JSON.stringify({"content": e.target.comment.value.toString(), "in_reply_to_status_id": post.data.id})
         })
     }
+
+
     return (
         <>
             <MainAppBar/>
@@ -101,7 +102,7 @@ export default function BlogPostPage({post, comments}: any) {
                 <Grid container rowSpacing={3} mt={0.5}>
                     {comments && (comments?.map((comment: any) => (
                     <Grid item key={comment.tweet_id}>
-                        <CommentComponent text={comment.text} author={comment.username} date={new Date(comment.date).toDateString()}/>
+                        <CommentComponent text={comment.text} author={comment.username} date={new Date(comment.created_at).toDateString()}/>
                     </Grid>
                     )))}
                 </Grid>
