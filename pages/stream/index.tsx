@@ -27,7 +27,7 @@ export async function getServerSideProps(context: any) {
     try{ 
         const twitterClient = new TwitterApi(twitterToken);
         const user = await twitterClient.currentUserV2();
-        const userTimeline = await twitterClient.v2.userTimeline("148873990");
+        const userTimeline = await twitterClient.v2.userTimeline(user.data.id);
 
         return {
             props: {
@@ -36,6 +36,7 @@ export async function getServerSideProps(context: any) {
             }
         };
     } catch(e) {
+        console.error(e);
         const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
         const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
     
