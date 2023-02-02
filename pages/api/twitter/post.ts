@@ -22,6 +22,8 @@ export default async function handler(
     res.status(500).json({error: 'User is not twitter authenticated'});
     return;
   }
+  console.log(req.body);
+  console.log('*********');
   const body = JSON.parse(req.body)
 
   const status = {status: body.content, in_reply_to_status_id: body.in_reply_to_status_id };

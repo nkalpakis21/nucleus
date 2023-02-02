@@ -60,12 +60,14 @@ export default function BlogPostPage({post, comments}: any) {
 
     const addComment = async(e: any) => {
         e.preventDefault();
-        console.log(post.data.id);
+
 
         const response = await fetch('/api/twitter/post', {
             method: 'POST',
-            body: JSON.stringify({"content": e.target.comment.value.toString(), "in_reply_to_status_id": post.data.id})
+            body: JSON.stringify({"content": e.target.comment.value.toString(), "in_reply_to_status_id": post.data.id.toString()})
         })
+        console.log(e.target.comment.value.toString());
+        console.log(post.data.id.toString());
     }
 
 
