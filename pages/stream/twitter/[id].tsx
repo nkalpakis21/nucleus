@@ -13,7 +13,7 @@ export async function getServerSideProps ({params, req, res}: any) {
     
     if(!twitterToken) {
         const client = new TwitterApi({ appKey: process.env.NEXT_PUBLIC_TWITTER_API_KEY!, appSecret: process.env.NEXT_PUBLIC_TWITTER_API_SECRET!, accessToken: twitterToken, accessSecret: twitterSecret });
-        const authLink = await client.generateAuthLink('http://localhost:3000/api/twitter/auth/callback');    
+        const authLink = await client.generateAuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK);    
         setCookie('twitterToken', authLink.oauth_token, { req, res, httpOnly: true });
         setCookie('twitterSecret', authLink.oauth_token_secret, { req, res, httpOnly: true });
         return {
