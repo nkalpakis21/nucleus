@@ -6,13 +6,6 @@ import { apiError } from '../../../utils/api/apiError';
 import { ApiErrorType } from '../../../types/api/IApiResponse';
 import { apiResponse } from '../../../utils/api/apiResponse';
 import { IPostTweetResponse } from '../../../types/api/twitter/IPostTweetResponse';
-
-
-interface IBlogCard {
-  title: string,
-  description: string,
-  date: string,
-}
  
 export default async function handler(
   req: NextApiRequest,
