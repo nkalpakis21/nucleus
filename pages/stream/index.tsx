@@ -12,9 +12,8 @@ export async function getServerSideProps(context: any) {
 
     
     if(!twitterToken) {
-        
-        const twitterClient = new TwitterApi({ clientId: 'aXl1MDZfS0VUakp3ZExBRjhkV2k6MTpjaQ', clientSecret: 'nlDr03OLCXuJFfoXQtcUBgz8f3ud9ccmXPBBX_sbxWXogE0uDg' });
-        const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink('http://localhost:3000/api/twitter/auth/callback', { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
+        const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
+        const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
     
         setCookie('twitterCodeVerifier', codeVerifier, { req: context.req, res: context.res, httpOnly: true });
         setCookie('twitterState', state, { req: context.req, res: context.res, httpOnly: true });        
