@@ -50,7 +50,7 @@ export default function LogInPage() {
     })
 
     if(data){
-      router.push('/blog');
+      router.push('/stream');
       return;
     }
     if(error){

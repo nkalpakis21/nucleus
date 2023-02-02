@@ -28,8 +28,8 @@ export default function MainAppBar() {
                         <Typography variant="h6" component="a" href="/" sx={{ flexGrow: 1 }} style={{ textDecoration: 'none', color: 'white' }}>
                             Nucleus 🧬
                         </Typography>
-                        <Link href="/blog" style={{textDecoration: 'none'}}>
-                            <Button sx={{color: 'white'}} variant="text">Blog</Button>
+                        <Link href="/stream" style={{textDecoration: 'none'}}>
+                            <Button sx={{color: 'white'}} variant="text">Stream</Button>
                         </Link>
                         {!!user ? (
                             <Button sx={{color: 'white'}} onClick={handleLogout} variant="text">Sign Out</Button>

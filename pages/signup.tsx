@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
@@ -13,6 +12,10 @@ import Container from '@mui/material/Container';
 import MainAppBar from '../components/app-bar/Main'
 import supabase from '../utils/supabase';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import Link from 'next/link';
+
+
 
 
 function Copyright(props: any) {
@@ -29,7 +32,8 @@ function Copyright(props: any) {
   }
 
 export default function SignUpPage() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [authLink, setAuthLink] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +42,7 @@ export default function SignUpPage() {
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
 
+    
     if (!email || !password) {
       setLoading(false);
       throw new Error('something went wrong');
@@ -53,7 +58,7 @@ export default function SignUpPage() {
     }
 
     if(data){
-      router.push('/blog');
+      router.push('/stream');
       return;
     }
     
@@ -65,6 +70,11 @@ export default function SignUpPage() {
     <>
       <MainAppBar/>
       <Container component="main" maxWidth="xs">
+          {authLink && (
+            <Box sx={{p:6}}>
+              <Link href={authLink}>Sign in via Twitter</Link>
+            </Box>
+          )}
         <Box
           sx={{
             marginTop: 8,
@@ -140,7 +150,7 @@ export default function SignUpPage() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/login">
                   Already have an account? Sign in
                 </Link>
               </Grid>
