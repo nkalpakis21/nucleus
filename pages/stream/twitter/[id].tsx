@@ -9,7 +9,7 @@ import { TwitterApi } from "twitter-api-v2";
 
 
 export async function getServerSideProps ({params, req, res}: any) {
-    const {twitterToken, twitterSecret, twitterUserId} = getCookies({ req, res });
+    const {twitterToken, twitterSecret} = getCookies({ req, res });
     
     if(!twitterToken) {
         const client = new TwitterApi({ appKey: process.env.NEXT_PUBLIC_TWITTER_API_KEY!, appSecret: process.env.NEXT_PUBLIC_TWITTER_API_SECRET!, accessToken: twitterToken, accessSecret: twitterSecret });
@@ -23,28 +23,41 @@ export async function getServerSideProps ({params, req, res}: any) {
         }
     }
     
-    const twitterClient = new TwitterApi(twitterToken);
-    const tweet = await twitterClient.v2.singleTweet(params.id, {
-    expansions: [
-        'entities.mentions.username',
-        'in_reply_to_user_id',
-    ],
-    "tweet.fields": "conversation_id"
-    });
-
-
+    try {
+        const twitterClient = new TwitterApi(twitterToken);
+        const tweet = await twitterClient.v2.singleTweet(params.id, {
+        expansions: [
+            'entities.mentions.username',
+            'in_reply_to_user_id',
+        ],
+        "tweet.fields": "conversation_id"
+        });
+        
+        const comments = await twitterClient.v2.search(`conversation_id: ${tweet.data.conversation_id}`, {
+            "tweet.fields" : ["created_at"]
+        });
     
-    const comments = await twitterClient.v2.search(`conversation_id: ${tweet.data.conversation_id}`, {
-        "tweet.fields" : ["created_at"]
-    });
+        return {
+            props: {
+                post: tweet,
+                comments: comments.data.data || []
+            }
+        }
+    } catch (e) {
+        console.error(e);
+        const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
+        const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
+    
+        setCookie('twitterCodeVerifier', codeVerifier, { req, res, httpOnly: true });
+        setCookie('twitterState', state, { req, res, httpOnly: true });        
 
-    return {
-        props: {
-            post: tweet,
-            comments: comments.data.data || []
-
+        return {
+            props: {
+                twitterAuthLink: url,
+            }
         }
     }
+
 }
 export default function BlogPostPage({post, comments}: any) {
     const opts = {

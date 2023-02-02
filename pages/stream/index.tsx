@@ -7,15 +7,15 @@ import Link from 'next/link';
 import { getCookies, setCookie} from 'cookies-next';
 import { TwitterApi } from 'twitter-api-v2';
 
-export async function getServerSideProps(context: any) {
-    const {twitterToken, twitterSecret, twitterUserId} = getCookies({ req: context.req, res: context.res });
+export async function getServerSideProps({req, res}: any) {
+    const {twitterToken, twitterSecret, twitterUserId} = getCookies({ req, res });
 
     if(!twitterToken) {
         const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
         const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
     
-        setCookie('twitterCodeVerifier', codeVerifier, { req: context.req, res: context.res, httpOnly: true });
-        setCookie('twitterState', state, { req: context.req, res: context.res, httpOnly: true });        
+        setCookie('twitterCodeVerifier', codeVerifier, { req, res, httpOnly: true });
+        setCookie('twitterState', state, { req, res, httpOnly: true });        
 
         return {
             props: {
@@ -40,8 +40,8 @@ export async function getServerSideProps(context: any) {
         const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
         const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
     
-        setCookie('twitterCodeVerifier', codeVerifier, { req: context.req, res: context.res, httpOnly: true });
-        setCookie('twitterState', state, { req: context.req, res: context.res, httpOnly: true });        
+        setCookie('twitterCodeVerifier', codeVerifier, { req, res, httpOnly: true });
+        setCookie('twitterState', state, { req, res, httpOnly: true });        
 
         return {
             props: {
