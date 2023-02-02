@@ -30,9 +30,9 @@ export default async function handler(
     const resp = twitterClient.v2.reply(status.status, status.in_reply_to_status_id);
     console.log(resp)
     res.status(200).json({ success: true })
+    return;
   } catch (e) {
     res.status(500).json({ error: 'Something went wrong' })  
+    return;
   }
-
-  res.status(200).json({ tweets: {} })
 }
