@@ -17,8 +17,8 @@ export default async function handler(
     if (state !== twitterState) {
         res.status(500).json({error: 'Stored tokens didnt match!'});
     }
-    const client = new TwitterApi({ clientId: 'aXl1MDZfS0VUakp3ZExBRjhkV2k6MTpjaQ', clientSecret: 'nlDr03OLCXuJFfoXQtcUBgz8f3ud9ccmXPBBX_sbxWXogE0uDg'});
-    const { accessToken, accessSecret, screenName, userId } = await client.loginWithOAuth2({ code, codeVerifier: twitterCodeVerifier, redirectUri: 'http://localhost:3000/api/twitter/auth/callback' });
+    const client = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET!});
+    const { accessToken, accessSecret, screenName, userId } = await client.loginWithOAuth2({ code, codeVerifier: twitterCodeVerifier, redirectUri: process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL });
 
     setCookie('twitterUserId', userId, { req, res, httpOnly: true });
     setCookie('twitterUsername', screenName, { req, res, httpOnly: true });
