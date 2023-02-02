@@ -29,22 +29,39 @@ export async function getServerSideProps ({params, req, res}: any) {
         'entities.mentions.username',
         'in_reply_to_user_id',
     ],
-    "tweet.fields": "conversation_id"
+    "tweet.fields": "conversation_id",
     });
 
 
     
-    const comments = await twitterClient.v2.search(`conversation_id: ${tweet.data.conversation_id}`, {
-        "tweet.fields" : ["created_at"]
+    const commentsResp = await twitterClient.v2.search(`conversation_id: ${tweet.data.conversation_id}`, {
+        "tweet.fields" : ["created_at", "author_id"],
+        'user.fields': ['username'],
+        expansions: [
+            // 'entities.mentions.username',
+            'in_reply_to_user_id',
+        ],
     });
+
+    const autherIds: Array<string> = commentsResp.data.data.map((comment) => comment.author_id || '');
+    const commentUsernames =  await twitterClient.v2.users(autherIds, {'user.fields': ['username']});
+
+    const comments = commentsResp.data.data.map((comment: any) => {
+        const user = commentUsernames.data.find((userObj) => userObj.id === comment.author_id)
+        return {
+            ...comment,
+            ...user
+        }
+    })
 
     return {
         props: {
             post: tweet,
-            comments: comments.data.data || []
+            comments: comments || []
 
         }
     }
+
 }
 export default function BlogPostPage({post, comments}: any) {
     const opts = {
@@ -102,7 +119,7 @@ export default function BlogPostPage({post, comments}: any) {
                 <Grid container rowSpacing={3} mt={0.5}>
                     {comments && (comments?.map((comment: any) => (
                     <Grid item key={comment.tweet_id}>
-                        <CommentComponent text={comment.text} author={comment.username} date={new Date(comment.created_at).toDateString()}/>
+                        <CommentComponent text={comment.text} author={`@${comment.username}`} date={new Date(comment.created_at).toDateString()}/>
                     </Grid>
                     )))}
                 </Grid>
