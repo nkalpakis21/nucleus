@@ -11,6 +11,9 @@ export async function getServerSideProps(context: any) {
     const {twitterToken, twitterSecret, twitterUserId} = getCookies({ req: context.req, res: context.res });
 
     
+    console.log(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL);
+    console.log(process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID);
+    console.log(process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET);
     if(!twitterToken) {
         const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
         const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
