@@ -9,18 +9,11 @@ import { TwitterApi } from "twitter-api-v2";
 
 
 export async function getServerSideProps ({params, req, res}: any) {
-    const {twitterToken, twitterSecret} = getCookies({ req, res });
+    const {twitterToken} = getCookies({ req, res });
     
     if(!twitterToken) {
-        const client = new TwitterApi({ appKey: process.env.NEXT_PUBLIC_TWITTER_API_KEY!, appSecret: process.env.NEXT_PUBLIC_TWITTER_API_SECRET!, accessToken: twitterToken, accessSecret: twitterSecret });
-        const authLink = await client.generateAuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK);    
-        setCookie('twitterToken', authLink.oauth_token, { req, res, httpOnly: true });
-        setCookie('twitterSecret', authLink.oauth_token_secret, { req, res, httpOnly: true });
-        return {
-            props: {
-                twitterAuthLink: authLink.url,
-            }
-        }
+        res.redirect(307, '/streams');
+        return;
     }
     
     try {
@@ -45,17 +38,8 @@ export async function getServerSideProps ({params, req, res}: any) {
         }
     } catch (e) {
         console.error(e);
-        const twitterClient = new TwitterApi({ clientId: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_ID!, clientSecret: process.env.NEXT_PUBLIC_TWITTER_OAUTH_CLIENT_SECRET! });
-        const { url, codeVerifier, state } = await twitterClient.generateOAuth2AuthLink(process.env.NEXT_PUBLIC_TWITTER_CALLBACK_URL!, { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
-    
-        setCookie('twitterCodeVerifier', codeVerifier, { req, res, httpOnly: true });
-        setCookie('twitterState', state, { req, res, httpOnly: true });        
-
-        return {
-            props: {
-                twitterAuthLink: url,
-            }
-        }
+        res.redirect(307, '/streams');
+        return;
     }
 
 }
