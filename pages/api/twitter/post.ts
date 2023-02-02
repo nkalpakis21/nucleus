@@ -27,7 +27,7 @@ export default async function handler(
     const body = JSON.parse(req.body)
     const status = {status: body.content, in_reply_to_status_id: body.in_reply_to_status_id };
     const twitterClient = new TwitterApi(twitterToken);
-    const resp = twitterClient.v2.reply(status.status, status.in_reply_to_status_id);
+    const resp = await twitterClient.v2.reply(status.status, status.in_reply_to_status_id);
     console.log(resp)
     res.status(200).json({ success: true })
     return;
