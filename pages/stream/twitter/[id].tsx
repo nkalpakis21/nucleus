@@ -66,10 +66,6 @@ export default function BlogPostPage({post, comments, redirectUrl}: any) {
         }
     }, [redirectUrl])
 
-    if(!redirectUrl) {
-        
-    }
-
     return (
         <>
             <MainAppBar/>
